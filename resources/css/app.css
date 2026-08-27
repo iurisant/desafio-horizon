@@ -17,6 +17,13 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
+    /* Horizon brand palette, exposed as utilities (bg-horizon-yellow, text-horizon-graphite, ...) */
+    --color-horizon-yellow: var(--horizon-yellow);
+    --color-horizon-black: var(--horizon-black);
+    --color-horizon-graphite: var(--horizon-graphite);
+    --color-horizon-gray-light: var(--horizon-gray-light);
+    --color-horizon-white: var(--horizon-white);
+
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 
@@ -90,76 +97,83 @@
 }
 
 :root {
-    --background: hsl(0 0% 100%);
-    --foreground: hsl(0 0% 3.9%);
-    --card: hsl(0 0% 100%);
-    --card-foreground: hsl(0 0% 3.9%);
-    --popover: hsl(0 0% 100%);
-    --popover-foreground: hsl(0 0% 3.9%);
-    --primary: hsl(0 0% 9%);
-    --primary-foreground: hsl(0 0% 98%);
-    --secondary: hsl(0 0% 92.1%);
-    --secondary-foreground: hsl(0 0% 9%);
-    --muted: hsl(0 0% 96.1%);
-    --muted-foreground: hsl(0 0% 45.1%);
-    --accent: hsl(0 0% 96.1%);
-    --accent-foreground: hsl(0 0% 9%);
+    /* Horizon — Identidade Visual */
+    --horizon-yellow: #fbe509;
+    --horizon-black: #000000;
+    --horizon-graphite: #141414;
+    --horizon-gray-light: #f7f7f7;
+    --horizon-white: #ffffff;
+
+    --background: var(--horizon-white);
+    --foreground: var(--horizon-graphite);
+    --card: var(--horizon-white);
+    --card-foreground: var(--horizon-graphite);
+    --popover: var(--horizon-white);
+    --popover-foreground: var(--horizon-graphite);
+    --primary: var(--horizon-yellow);
+    --primary-foreground: var(--horizon-black);
+    --secondary: var(--horizon-graphite);
+    --secondary-foreground: var(--horizon-white);
+    --muted: var(--horizon-gray-light);
+    --muted-foreground: color-mix(in srgb, var(--horizon-graphite) 55%, white);
+    --accent: color-mix(in srgb, var(--horizon-yellow) 22%, white);
+    --accent-foreground: var(--horizon-graphite);
     --destructive: hsl(0 84.2% 60.2%);
     --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(0 0% 92.8%);
-    --input: hsl(0 0% 89.8%);
-    --ring: hsl(0 0% 3.9%);
-    --chart-1: hsl(12 76% 61%);
-    --chart-2: hsl(173 58% 39%);
-    --chart-3: hsl(197 37% 24%);
-    --chart-4: hsl(43 74% 66%);
-    --chart-5: hsl(27 87% 67%);
+    --border: color-mix(in srgb, var(--horizon-graphite) 10%, white);
+    --input: color-mix(in srgb, var(--horizon-graphite) 16%, white);
+    --ring: var(--horizon-yellow);
+    --chart-1: var(--horizon-yellow);
+    --chart-2: var(--horizon-graphite);
+    --chart-3: color-mix(in srgb, var(--horizon-yellow) 55%, var(--horizon-graphite));
+    --chart-4: color-mix(in srgb, var(--horizon-graphite) 45%, white);
+    --chart-5: color-mix(in srgb, var(--horizon-yellow) 35%, white);
     --radius: 0.5rem;
-    --sidebar-background: hsl(0 0% 98%);
-    --sidebar-foreground: hsl(240 5.3% 26.1%);
-    --sidebar-primary: hsl(0 0% 10%);
-    --sidebar-primary-foreground: hsl(0 0% 98%);
-    --sidebar-accent: hsl(0 0% 94%);
-    --sidebar-accent-foreground: hsl(0 0% 30%);
-    --sidebar-border: hsl(0 0% 91%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
-    --sidebar: hsl(0 0% 98%);
+    --sidebar-background: var(--horizon-black);
+    --sidebar-foreground: var(--horizon-white);
+    --sidebar-primary: var(--horizon-yellow);
+    --sidebar-primary-foreground: var(--horizon-black);
+    --sidebar-accent: color-mix(in srgb, var(--horizon-graphite) 70%, black);
+    --sidebar-accent-foreground: var(--horizon-white);
+    --sidebar-border: color-mix(in srgb, white 12%, var(--horizon-black));
+    --sidebar-ring: var(--horizon-yellow);
+    --sidebar: var(--horizon-black);
 }
 
 .dark {
-    --background: hsl(0 0% 3.9%);
-    --foreground: hsl(0 0% 98%);
-    --card: hsl(0 0% 3.9%);
-    --card-foreground: hsl(0 0% 98%);
-    --popover: hsl(0 0% 3.9%);
-    --popover-foreground: hsl(0 0% 98%);
-    --primary: hsl(0 0% 98%);
-    --primary-foreground: hsl(0 0% 9%);
-    --secondary: hsl(0 0% 14.9%);
-    --secondary-foreground: hsl(0 0% 98%);
-    --muted: hsl(0 0% 16.08%);
-    --muted-foreground: hsl(0 0% 63.9%);
-    --accent: hsl(0 0% 14.9%);
-    --accent-foreground: hsl(0 0% 98%);
+    --background: var(--horizon-black);
+    --foreground: var(--horizon-gray-light);
+    --card: var(--horizon-graphite);
+    --card-foreground: var(--horizon-white);
+    --popover: var(--horizon-graphite);
+    --popover-foreground: var(--horizon-white);
+    --primary: var(--horizon-yellow);
+    --primary-foreground: var(--horizon-black);
+    --secondary: color-mix(in srgb, var(--horizon-graphite) 55%, white);
+    --secondary-foreground: var(--horizon-white);
+    --muted: var(--horizon-graphite);
+    --muted-foreground: color-mix(in srgb, var(--horizon-gray-light) 55%, black);
+    --accent: color-mix(in srgb, var(--horizon-yellow) 16%, black);
+    --accent-foreground: var(--horizon-yellow);
     --destructive: hsl(0 84% 60%);
     --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(0 0% 14.9%);
-    --input: hsl(0 0% 14.9%);
-    --ring: hsl(0 0% 83.1%);
-    --chart-1: hsl(220 70% 50%);
-    --chart-2: hsl(160 60% 45%);
-    --chart-3: hsl(30 80% 55%);
-    --chart-4: hsl(280 65% 60%);
-    --chart-5: hsl(340 75% 55%);
-    --sidebar-background: hsl(0 0% 7%);
-    --sidebar-foreground: hsl(0 0% 95.9%);
-    --sidebar-primary: hsl(360, 100%, 100%);
-    --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(0 0% 15.9%);
-    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-    --sidebar-border: hsl(0 0% 15.9%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
-    --sidebar: hsl(240 5.9% 10%);
+    --border: color-mix(in srgb, white 12%, var(--horizon-graphite));
+    --input: color-mix(in srgb, white 18%, var(--horizon-graphite));
+    --ring: var(--horizon-yellow);
+    --chart-1: var(--horizon-yellow);
+    --chart-2: color-mix(in srgb, var(--horizon-gray-light) 70%, black);
+    --chart-3: color-mix(in srgb, var(--horizon-yellow) 55%, var(--horizon-graphite));
+    --chart-4: color-mix(in srgb, var(--horizon-graphite) 60%, white);
+    --chart-5: color-mix(in srgb, var(--horizon-yellow) 35%, black);
+    --sidebar-background: var(--horizon-black);
+    --sidebar-foreground: var(--horizon-white);
+    --sidebar-primary: var(--horizon-yellow);
+    --sidebar-primary-foreground: var(--horizon-black);
+    --sidebar-accent: color-mix(in srgb, var(--horizon-graphite) 70%, black);
+    --sidebar-accent-foreground: var(--horizon-white);
+    --sidebar-border: color-mix(in srgb, white 12%, var(--horizon-black));
+    --sidebar-ring: var(--horizon-yellow);
+    --sidebar: var(--horizon-black);
 }
 
 @layer base {
