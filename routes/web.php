@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
@@ -12,7 +13,11 @@ Route::post('fornecedores', [FornecedorController::class, 'store'])->name('forne
 Route::put('fornecedores/{fornecedor}', [FornecedorController::class, 'update'])->name('fornecedores.update');
 Route::delete('fornecedores/{fornecedor}', [FornecedorController::class, 'destroy'])->name('fornecedores.destroy');
 
-Route::inertia('produtos', 'Produtos')->name('produtos');
+Route::get('produtos', [ProdutoController::class, 'index'])->name('produtos');
+Route::post('produtos', [ProdutoController::class, 'store'])->name('produtos.store');
+Route::put('produtos/{produto}', [ProdutoController::class, 'update'])->name('produtos.update');
+Route::delete('produtos/{produto}', [ProdutoController::class, 'destroy'])->name('produtos.destroy');
+
 Route::inertia('design-system', 'DesignSystem')->name('design-system');
 
 require __DIR__.'/settings.php';

@@ -28,8 +28,8 @@ class Cnpj implements ValidationRule
             return false;
         }
 
-        return (int) $cnpj[12] === static::checkDigit($cnpj, 12)
-            && (int) $cnpj[13] === static::checkDigit($cnpj, 13);
+        return (int) $cnpj[12] === self::checkDigit($cnpj, 12)
+            && (int) $cnpj[13] === self::checkDigit($cnpj, 13);
     }
 
     /**
@@ -43,8 +43,8 @@ class Cnpj implements ValidationRule
             $digits[] = random_int(0, 9);
         }
 
-        $digits[] = static::checkDigit(implode('', $digits), 12);
-        $digits[] = static::checkDigit(implode('', $digits), 13);
+        $digits[] = self::checkDigit(implode('', $digits), 12);
+        $digits[] = self::checkDigit(implode('', $digits), 13);
 
         return implode('', $digits);
     }

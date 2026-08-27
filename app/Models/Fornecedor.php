@@ -7,6 +7,7 @@ use Database\Factories\FornecedorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -40,5 +41,13 @@ class Fornecedor extends Model
         return [
             'status' => StatusFornecedor::class,
         ];
+    }
+
+    /**
+     * @return HasMany<Produto, $this>
+     */
+    public function produtos(): HasMany
+    {
+        return $this->hasMany(Produto::class);
     }
 }
