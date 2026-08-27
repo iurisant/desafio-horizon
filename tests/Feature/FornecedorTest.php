@@ -186,7 +186,7 @@ class FornecedorTest extends TestCase
         $this->assertSame(StatusFornecedor::Inativo, $fornecedor->status);
     }
 
-    public function test_fornecedor_can_be_deleted(): void
+    public function test_fornecedor_is_soft_deleted(): void
     {
         $user = User::factory()->create();
         $fornecedor = Fornecedor::factory()->create();
@@ -194,6 +194,21 @@ class FornecedorTest extends TestCase
         $response = $this->actingAs($user)->delete(route('fornecedores.destroy', $fornecedor));
 
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseCount('fornecedores', 0);
+        $this->assertSoftDeleted($fornecedor);
+        $this->assertNull(Fornecedor::find($fornecedor->id));
+    }
+
+    public function test_cnpj_and_email_remain_reserved_while_fornecedor_is_soft_deleted(): void
+    {
+        $user = User::factory()->create();
+        $fornecedor = Fornecedor::factory()->create();
+        $fornecedor->delete();
+
+        $response = $this->actingAs($user)->post(route('fornecedores.store'), $this->validPayload([
+            'cnpj' => $fornecedor->cnpj,
+            'email' => $fornecedor->email,
+        ]));
+
+        $response->assertSessionHasErrors(['cnpj', 'email']);
     }
 }

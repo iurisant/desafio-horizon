@@ -7,6 +7,7 @@ use Database\Factories\FornecedorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -18,12 +19,13 @@ use Illuminate\Support\Carbon;
  * @property StatusFornecedor $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  */
 #[Fillable(['nome', 'cnpj', 'email', 'telefone', 'status'])]
 class Fornecedor extends Model
 {
     /** @use HasFactory<FornecedorFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * Eloquent's English pluralizer would otherwise guess "fornecedors".
