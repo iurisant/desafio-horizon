@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import Heading from '@/components/Heading.vue';
+import { designSystem } from '@/routes';
 import {
     Alert,
     AlertDescription,
@@ -27,7 +28,7 @@ import { Separator } from '@/components/ui/separator';
 
 defineOptions({
     layout: {
-        breadcrumbs: [{ title: 'Design System', href: '/design-system' }],
+        breadcrumbs: [{ title: 'Design System', href: designSystem() }],
     },
 });
 
