@@ -34,6 +34,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { formatarPreco } from '@/lib/format';
 import { produtoAcoesVisiveis } from '@/lib/produtoActions';
 import { produtos as produtosRoute } from '@/routes';
 import type { Fornecedor, Paginator, Produto, ProdutoFiltros } from '@/types';
@@ -102,13 +103,6 @@ function navigate(url: string) {
             },
         },
     );
-}
-
-function formatarPreco(preco: string): string {
-    return Number(preco).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-    });
 }
 
 const linhas = computed(() =>
@@ -181,9 +175,7 @@ const linhas = computed(() =>
             </div>
         </div>
 
-        <div
-            class="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-        >
+        <div class="rounded-xl border">
             <Table>
                 <TableHeader>
                     <TableRow>

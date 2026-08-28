@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
 
-Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('fornecedores', [FornecedorController::class, 'index'])->name('fornecedores');
 Route::post('fornecedores', [FornecedorController::class, 'store'])->name('fornecedores.store');

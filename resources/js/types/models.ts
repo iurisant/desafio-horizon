@@ -56,3 +56,42 @@ export type ProdutoFiltros = {
     status: StatusProduto | null;
     excluidos: boolean;
 };
+
+export type DashboardFiltros = {
+    status: StatusProduto | null;
+    data_inicio: string | null;
+    data_fim: string | null;
+};
+
+export type DashboardCards = {
+    fornecedores_ativos: number;
+    fornecedores_inativos: number;
+    produtos_total: number;
+    produtos_excluidos: number;
+    valor_total_produtos: string;
+    preco_medio_produtos: string;
+};
+
+export type ContagemPorStatus = {
+    status: 'ativo' | 'inativo';
+    total: number;
+};
+
+export type ProdutoPorDia = {
+    dia: string;
+    total: number;
+};
+
+export type TopFornecedor = {
+    id: number;
+    nome: string;
+    produtos_count: number;
+};
+
+export type DashboardMetricas = {
+    cards: DashboardCards;
+    fornecedoresPorStatus: ContagemPorStatus[];
+    produtosPorStatus: ContagemPorStatus[];
+    produtosPorDia: ProdutoPorDia[];
+    topFornecedores: TopFornecedor[];
+};

@@ -170,9 +170,7 @@ const linhas = computed(() =>
             </div>
         </div>
 
-        <div
-            class="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-        >
+        <div class="rounded-xl border">
             <Table>
                 <TableHeader>
                     <TableRow>
