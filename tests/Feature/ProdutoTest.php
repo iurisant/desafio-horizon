@@ -8,6 +8,7 @@ use App\Models\Fornecedor;
 use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class ProdutoTest extends TestCase
@@ -42,6 +43,7 @@ class ProdutoTest extends TestCase
         $response = $this->actingAs($user)->post(route('produtos.store'), $this->validPayload());
 
         $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto cadastrado com sucesso.']);
         $this->assertDatabaseCount('produtos', 1);
         $this->assertSame(StatusProduto::Ativo, Produto::first()->status);
     }
@@ -228,6 +230,7 @@ class ProdutoTest extends TestCase
         ]));
 
         $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto atualizado com sucesso.']);
 
         $produto->refresh();
         $this->assertSame('Produto Atualizado', $produto->nome);
@@ -242,6 +245,7 @@ class ProdutoTest extends TestCase
         $response = $this->actingAs($user)->delete(route('produtos.destroy', $produto));
 
         $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto excluído com sucesso.']);
         $this->assertSoftDeleted($produto);
         $this->assertNull(Produto::find($produto->id));
     }
@@ -255,6 +259,7 @@ class ProdutoTest extends TestCase
         $response = $this->actingAs($user)->patch(route('produtos.restaurar', $produto));
 
         $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto restaurado com sucesso.']);
         $this->assertNotNull(Produto::find($produto->id));
     }
 
@@ -266,6 +271,7 @@ class ProdutoTest extends TestCase
         $response = $this->actingAs($user)->delete(route('produtos.excluir-permanente', $produto));
 
         $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto excluído definitivamente com sucesso.']);
         $this->assertDatabaseCount('produtos', 0);
     }
 
@@ -279,5 +285,105 @@ class ProdutoTest extends TestCase
 
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseCount('produtos', 0);
+    }
+
+    public function test_produto_can_be_inativado(): void
+    {
+        $user = User::factory()->create();
+        $produto = Produto::factory()->create(['status' => StatusProduto::Ativo]);
+
+        $response = $this->actingAs($user)->patch(route('produtos.inativar', $produto));
+
+        $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto inativado com sucesso.']);
+        $this->assertSame(StatusProduto::Inativo, $produto->fresh()->status);
+    }
+
+    public function test_produto_can_be_reativado(): void
+    {
+        $user = User::factory()->create();
+        $produto = Produto::factory()->create(['status' => StatusProduto::Inativo]);
+
+        $response = $this->actingAs($user)->patch(route('produtos.reativar', $produto));
+
+        $response->assertSessionHasNoErrors();
+        $response->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Produto reativado com sucesso.']);
+        $this->assertSame(StatusProduto::Ativo, $produto->fresh()->status);
+    }
+
+    public function test_inativar_and_reativar_are_not_allowed_on_soft_deleted_produto(): void
+    {
+        $user = User::factory()->create();
+        $produto = Produto::factory()->create();
+        $produto->delete();
+
+        $this->actingAs($user)->patch(route('produtos.inativar', $produto))->assertNotFound();
+        $this->actingAs($user)->patch(route('produtos.reativar', $produto))->assertNotFound();
+    }
+
+    public function test_busca_filters_produtos_by_nome(): void
+    {
+        $user = User::factory()->create();
+        $correspondente = Produto::factory()->create(['nome' => 'Cadeira Ergonômica']);
+        Produto::factory()->create(['nome' => 'Mesa de Escritório']);
+
+        $response = $this->actingAs($user)->get(route('produtos', ['busca' => 'Ergonômica']));
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('Produtos')
+            ->has('produtos.data', 1)
+            ->where('produtos.data.0.id', $correspondente->id)
+            ->where('filtros.busca', 'Ergonômica')
+        );
+    }
+
+    public function test_status_filtro_filters_produtos(): void
+    {
+        $user = User::factory()->create();
+        $ativo = Produto::factory()->create(['status' => StatusProduto::Ativo]);
+        Produto::factory()->create(['status' => StatusProduto::Inativo]);
+
+        $response = $this->actingAs($user)->get(route('produtos', ['status' => 'ativo']));
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->has('produtos.data', 1)
+            ->where('produtos.data.0.id', $ativo->id)
+        );
+    }
+
+    public function test_excluidos_filtro_shows_only_soft_deleted_produtos(): void
+    {
+        $user = User::factory()->create();
+        $ativo = Produto::factory()->create();
+        $excluido = Produto::factory()->create();
+        $excluido->delete();
+
+        $listaNormal = $this->actingAs($user)->get(route('produtos'));
+        $listaNormal->assertInertia(fn (Assert $page) => $page
+            ->has('produtos.data', 1)
+            ->where('produtos.data.0.id', $ativo->id)
+        );
+
+        $listaExcluidos = $this->actingAs($user)->get(route('produtos', ['excluidos' => 1]));
+        $listaExcluidos->assertInertia(fn (Assert $page) => $page
+            ->has('produtos.data', 1)
+            ->where('produtos.data.0.id', $excluido->id)
+        );
+    }
+
+    public function test_produtos_listing_exposes_only_active_fornecedores_as_elegiveis(): void
+    {
+        $user = User::factory()->create();
+        $ativo = Fornecedor::factory()->create(['status' => StatusFornecedor::Ativo]);
+        Fornecedor::factory()->create(['status' => StatusFornecedor::Inativo]);
+        $excluido = Fornecedor::factory()->create();
+        $excluido->delete();
+
+        $response = $this->actingAs($user)->get(route('produtos'));
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->has('fornecedoresElegiveis', 1)
+            ->where('fornecedoresElegiveis.0.id', $ativo->id)
+        );
     }
 }

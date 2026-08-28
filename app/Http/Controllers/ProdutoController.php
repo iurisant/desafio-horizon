@@ -2,26 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Concerns\FlashesToastMessages;
+use App\Enums\StatusProduto;
 use App\Http\Requests\StoreProdutoRequest;
 use App\Http\Requests\UpdateProdutoRequest;
 use App\Models\Produto;
+use App\Services\FornecedorService;
 use App\Services\ProdutoService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProdutoController extends Controller
 {
-    public function index(): Response
+    use FlashesToastMessages;
+
+    public function index(Request $request, ProdutoService $produtoService, FornecedorService $fornecedorService): Response
     {
+        $busca = $request->string('busca')->trim()->value() ?: null;
+        $status = $request->enum('status', StatusProduto::class);
+        $excluidos = $request->boolean('excluidos');
+
         return Inertia::render('Produtos', [
-            'produtos' => Produto::query()->with('fornecedor')->latest()->paginate(15),
+            'produtos' => $produtoService->list($busca, $status, $excluidos),
+            'filtros' => [
+                'busca' => $busca,
+                'status' => $status?->value,
+                'excluidos' => $excluidos,
+            ],
+            'fornecedoresElegiveis' => $fornecedorService->listarElegiveis(),
         ]);
     }
 
     public function store(StoreProdutoRequest $request, ProdutoService $service): RedirectResponse
     {
         $service->create($request->validated());
+
+        $this->flashToast('success', 'Produto cadastrado com sucesso.');
 
         return back();
     }
@@ -30,12 +48,16 @@ class ProdutoController extends Controller
     {
         $service->update($produto, $request->validated());
 
+        $this->flashToast('success', 'Produto atualizado com sucesso.');
+
         return back();
     }
 
     public function destroy(Produto $produto, ProdutoService $service): RedirectResponse
     {
         $service->delete($produto);
+
+        $this->flashToast('success', 'Produto excluído com sucesso.');
 
         return back();
     }
@@ -44,12 +66,34 @@ class ProdutoController extends Controller
     {
         $service->restore($produto);
 
+        $this->flashToast('success', 'Produto restaurado com sucesso.');
+
         return back();
     }
 
     public function forceDestroy(Produto $produto, ProdutoService $service): RedirectResponse
     {
         $service->forceDelete($produto);
+
+        $this->flashToast('success', 'Produto excluído definitivamente com sucesso.');
+
+        return back();
+    }
+
+    public function inativar(Produto $produto, ProdutoService $service): RedirectResponse
+    {
+        $service->inativar($produto);
+
+        $this->flashToast('success', 'Produto inativado com sucesso.');
+
+        return back();
+    }
+
+    public function reativar(Produto $produto, ProdutoService $service): RedirectResponse
+    {
+        $service->reativar($produto);
+
+        $this->flashToast('success', 'Produto reativado com sucesso.');
 
         return back();
     }
