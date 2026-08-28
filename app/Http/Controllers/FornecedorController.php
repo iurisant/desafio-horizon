@@ -8,6 +8,8 @@ use App\Http\Requests\StoreFornecedorRequest;
 use App\Http\Requests\UpdateFornecedorRequest;
 use App\Models\Fornecedor;
 use App\Services\FornecedorService;
+use Dedoc\Scramble\Attributes\IgnoreResponse;
+use Dedoc\Scramble\Attributes\Response as ScrambleResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,6 +41,8 @@ class FornecedorController extends Controller
     /**
      * Cadastra um novo fornecedor.
      */
+    #[IgnoreResponse(200)]
+    #[ScrambleResponse(201, description: 'Fornecedor cadastrado com sucesso.')]
     public function store(StoreFornecedorRequest $request, FornecedorService $service): RedirectResponse
     {
         $service->create($request->validated());

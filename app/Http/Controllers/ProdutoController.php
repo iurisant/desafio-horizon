@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateProdutoRequest;
 use App\Models\Produto;
 use App\Services\FornecedorService;
 use App\Services\ProdutoService;
+use Dedoc\Scramble\Attributes\IgnoreResponse;
+use Dedoc\Scramble\Attributes\Response as ScrambleResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -41,6 +43,8 @@ class ProdutoController extends Controller
     /**
      * Cadastra um novo produto vinculado a um fornecedor ativo.
      */
+    #[IgnoreResponse(200)]
+    #[ScrambleResponse(201, description: 'Produto cadastrado com sucesso.')]
     public function store(StoreProdutoRequest $request, ProdutoService $service): RedirectResponse
     {
         $service->create($request->validated());
