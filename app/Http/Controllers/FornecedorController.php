@@ -17,6 +17,9 @@ class FornecedorController extends Controller
 {
     use FlashesToastMessages;
 
+    /**
+     * Lista fornecedores com paginação, filtros por nome/status e contagem de produtos vinculados.
+     */
     public function index(Request $request, FornecedorService $service): Response
     {
         $busca = $request->string('busca')->trim()->value() ?: null;
@@ -33,6 +36,9 @@ class FornecedorController extends Controller
         ]);
     }
 
+    /**
+     * Cadastra um novo fornecedor.
+     */
     public function store(StoreFornecedorRequest $request, FornecedorService $service): RedirectResponse
     {
         $service->create($request->validated());
@@ -42,6 +48,9 @@ class FornecedorController extends Controller
         return back();
     }
 
+    /**
+     * Atualiza os dados de um fornecedor.
+     */
     public function update(UpdateFornecedorRequest $request, Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
     {
         $service->update($fornecedor, $request->validated());
@@ -51,6 +60,9 @@ class FornecedorController extends Controller
         return back();
     }
 
+    /**
+     * Exclui um fornecedor (soft delete, reversível).
+     */
     public function destroy(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
     {
         $service->delete($fornecedor);
@@ -60,6 +72,9 @@ class FornecedorController extends Controller
         return back();
     }
 
+    /**
+     * Restaura um fornecedor excluído (soft delete).
+     */
     public function restore(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
     {
         $service->restore($fornecedor);
@@ -69,6 +84,9 @@ class FornecedorController extends Controller
         return back();
     }
 
+    /**
+     * Exclui um fornecedor definitivamente (irreversível). Recusado se ele ainda tiver produtos vinculados.
+     */
     public function forceDestroy(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
     {
         $service->forceDelete($fornecedor);
@@ -78,6 +96,10 @@ class FornecedorController extends Controller
         return back();
     }
 
+    /**
+     * Inativa um fornecedor. Produtos já cadastrados não são afetados, mas nenhum produto
+     * novo pode ser vinculado a um fornecedor inativo.
+     */
     public function inativar(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
     {
         $service->inativar($fornecedor);
@@ -87,6 +109,9 @@ class FornecedorController extends Controller
         return back();
     }
 
+    /**
+     * Reativa um fornecedor inativo.
+     */
     public function reativar(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
     {
         $service->reativar($fornecedor);
