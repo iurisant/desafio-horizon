@@ -11,6 +11,7 @@ Aplicação web para cadastro e gestão de **Fornecedores** e **Produtos**, cons
 - [Pré-requisitos](#pré-requisitos)
 - [Como instalar](#como-instalar)
 - [Como iniciar](#como-iniciar)
+- [Dados de exemplo (seed)](#dados-de-exemplo-seed)
 - [Como testar](#como-testar)
 - [Documentação da API (Swagger)](#documentação-da-api-swagger)
 - [Estrutura do projeto](#estrutura-do-projeto)
@@ -140,6 +141,16 @@ npm run build
 ```
 
 > **Sem login necessário**: o middleware `AutoLogin` autentica automaticamente qualquer requisição com um usuário padrão — não é preciso criar conta nem fazer login para usar o app (ver [Observações](#observações-importantes)).
+
+## Dados de exemplo (seed)
+
+O `php artisan migrate` (passo 4 da instalação) já cria o usuário padrão, mas não popula Fornecedores/Produtos. Se quiser explorar as telas com dados de exemplo em vez de cadastrar tudo manualmente, rode o seeder opcional:
+
+```bash
+php artisan db:seed --class=DemoDataSeeder
+```
+
+Isso cria ~15 fornecedores (a maioria ativos, alguns inativos) e dezenas de produtos vinculados a eles, incluindo alguns produtos inativos e alguns excluídos (soft delete) — o suficiente para testar filtros, lixeira e as ações condicionais da interface.
 
 ## Como testar
 
