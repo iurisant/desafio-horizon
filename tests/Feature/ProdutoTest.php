@@ -245,4 +245,39 @@ class ProdutoTest extends TestCase
         $this->assertSoftDeleted($produto);
         $this->assertNull(Produto::find($produto->id));
     }
+
+    public function test_produto_can_be_restored(): void
+    {
+        $user = User::factory()->create();
+        $produto = Produto::factory()->create();
+        $produto->delete();
+
+        $response = $this->actingAs($user)->patch(route('produtos.restaurar', $produto));
+
+        $response->assertSessionHasNoErrors();
+        $this->assertNotNull(Produto::find($produto->id));
+    }
+
+    public function test_produto_can_be_permanently_deleted(): void
+    {
+        $user = User::factory()->create();
+        $produto = Produto::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('produtos.excluir-permanente', $produto));
+
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseCount('produtos', 0);
+    }
+
+    public function test_soft_deleted_produto_can_be_permanently_deleted(): void
+    {
+        $user = User::factory()->create();
+        $produto = Produto::factory()->create();
+        $produto->delete();
+
+        $response = $this->actingAs($user)->delete(route('produtos.excluir-permanente', $produto));
+
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseCount('produtos', 0);
+    }
 }

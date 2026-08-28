@@ -39,4 +39,18 @@ class FornecedorController extends Controller
 
         return back();
     }
+
+    public function restore(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
+    {
+        $service->restore($fornecedor);
+
+        return back();
+    }
+
+    public function forceDestroy(Fornecedor $fornecedor, FornecedorService $service): RedirectResponse
+    {
+        $service->forceDelete($fornecedor);
+
+        return back();
+    }
 }

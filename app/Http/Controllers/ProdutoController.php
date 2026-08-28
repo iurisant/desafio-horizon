@@ -39,4 +39,18 @@ class ProdutoController extends Controller
 
         return back();
     }
+
+    public function restore(Produto $produto, ProdutoService $service): RedirectResponse
+    {
+        $service->restore($produto);
+
+        return back();
+    }
+
+    public function forceDestroy(Produto $produto, ProdutoService $service): RedirectResponse
+    {
+        $service->forceDelete($produto);
+
+        return back();
+    }
 }

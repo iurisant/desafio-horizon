@@ -28,4 +28,16 @@ class ProdutoService
     {
         $produto->delete();
     }
+
+    public function restore(Produto $produto): Produto
+    {
+        $produto->restore();
+
+        return $produto;
+    }
+
+    public function forceDelete(Produto $produto): void
+    {
+        $produto->forceDelete();
+    }
 }

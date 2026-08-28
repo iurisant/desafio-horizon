@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\StatusFornecedor;
 use App\Models\Fornecedor;
+use App\Models\Produto;
 use App\Models\User;
 use App\Rules\Cnpj;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -210,5 +211,53 @@ class FornecedorTest extends TestCase
         ]));
 
         $response->assertSessionHasErrors(['cnpj', 'email']);
+    }
+
+    public function test_fornecedor_can_be_restored(): void
+    {
+        $user = User::factory()->create();
+        $fornecedor = Fornecedor::factory()->create();
+        $fornecedor->delete();
+
+        $response = $this->actingAs($user)->patch(route('fornecedores.restaurar', $fornecedor));
+
+        $response->assertSessionHasNoErrors();
+        $this->assertNotNull(Fornecedor::find($fornecedor->id));
+    }
+
+    public function test_fornecedor_without_produtos_can_be_permanently_deleted(): void
+    {
+        $user = User::factory()->create();
+        $fornecedor = Fornecedor::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('fornecedores.excluir-permanente', $fornecedor));
+
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseCount('fornecedores', 0);
+    }
+
+    public function test_fornecedor_with_produtos_cannot_be_permanently_deleted(): void
+    {
+        $user = User::factory()->create();
+        $fornecedor = Fornecedor::factory()->create();
+        Produto::factory()->create(['fornecedor_id' => $fornecedor->id]);
+
+        $response = $this->actingAs($user)->delete(route('fornecedores.excluir-permanente', $fornecedor));
+
+        $response->assertSessionHasErrors('fornecedor');
+        $this->assertDatabaseCount('fornecedores', 1);
+    }
+
+    public function test_fornecedor_with_soft_deleted_produtos_cannot_be_permanently_deleted(): void
+    {
+        $user = User::factory()->create();
+        $fornecedor = Fornecedor::factory()->create();
+        $produto = Produto::factory()->create(['fornecedor_id' => $fornecedor->id]);
+        $produto->delete();
+
+        $response = $this->actingAs($user)->delete(route('fornecedores.excluir-permanente', $fornecedor));
+
+        $response->assertSessionHasErrors('fornecedor');
+        $this->assertDatabaseCount('fornecedores', 1);
     }
 }
