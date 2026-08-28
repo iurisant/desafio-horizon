@@ -5,7 +5,7 @@ use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Welcome')->name('home');
+Route::redirect('/', '/dashboard')->name('home');
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
