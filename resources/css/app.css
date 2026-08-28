@@ -125,7 +125,11 @@
     --ring: var(--horizon-yellow);
     --chart-1: var(--horizon-yellow);
     --chart-2: var(--horizon-graphite);
-    --chart-3: color-mix(in srgb, var(--horizon-yellow) 55%, var(--horizon-graphite));
+    --chart-3: color-mix(
+        in srgb,
+        var(--horizon-yellow) 55%,
+        var(--horizon-graphite)
+    );
     --chart-4: color-mix(in srgb, var(--horizon-graphite) 45%, white);
     --chart-5: color-mix(in srgb, var(--horizon-yellow) 35%, white);
     --radius: 0.5rem;
@@ -152,7 +156,11 @@
     --secondary: color-mix(in srgb, var(--horizon-graphite) 55%, white);
     --secondary-foreground: var(--horizon-white);
     --muted: var(--horizon-graphite);
-    --muted-foreground: color-mix(in srgb, var(--horizon-gray-light) 55%, black);
+    --muted-foreground: color-mix(
+        in srgb,
+        var(--horizon-gray-light) 55%,
+        black
+    );
     --accent: color-mix(in srgb, var(--horizon-yellow) 16%, black);
     --accent-foreground: var(--horizon-yellow);
     --destructive: hsl(0 84% 60%);
@@ -162,7 +170,11 @@
     --ring: var(--horizon-yellow);
     --chart-1: var(--horizon-yellow);
     --chart-2: color-mix(in srgb, var(--horizon-gray-light) 70%, black);
-    --chart-3: color-mix(in srgb, var(--horizon-yellow) 55%, var(--horizon-graphite));
+    --chart-3: color-mix(
+        in srgb,
+        var(--horizon-yellow) 55%,
+        var(--horizon-graphite)
+    );
     --chart-4: color-mix(in srgb, var(--horizon-graphite) 60%, white);
     --chart-5: color-mix(in srgb, var(--horizon-yellow) 35%, black);
     --sidebar-background: var(--horizon-black);
