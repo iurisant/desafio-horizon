@@ -50,7 +50,7 @@ Todas as mutações dão feedback visual via toast, atualizam a listagem sem rel
 
 ## Funcionalidades
 
-- **CRUD completo** de Fornecedores e Produtos, com validação de campos (CNPJ com dígito verificador, telefone com DDI/DDD, preço com exatamente 2 casas decimais, código interno único por fornecedor, etc.)
+- **CRUD completo** de Fornecedores e Produtos, com validação de campos (CNPJ alfanumérico com dígito verificador, telefone com DDI/DDD, preço com exatamente 2 casas decimais, código interno único por fornecedor, etc.)
 - **Listagem com paginação, busca por nome e filtro por status** (Ativo/Inativo)
 - **Lixeira**: aba "Excluídos" com URL própria (compartilhável), mostrando só os registros com soft delete
 - **Inativar / Reativar**: ação rápida e reversível, sem passar pelo formulário de edição completo
@@ -65,7 +65,7 @@ Todas as mutações dão feedback visual via toast, atualizam a listagem sem rel
 | Campo | Regra |
 | --- | --- |
 | Nome | Obrigatório, 3 a 150 caracteres |
-| CNPJ | Obrigatório, válido (dígito verificador) e único |
+| CNPJ | Obrigatório, formato alfanumérico da Receita Federal (12 caracteres alfanuméricos + 2 dígitos verificadores numéricos), com dígitos verificadores válidos e único |
 | Email | Obrigatório, formato válido e único |
 | Telefone | Obrigatório, com DDI e DDD |
 | Status | Restrito a `Ativo` ou `Inativo` |

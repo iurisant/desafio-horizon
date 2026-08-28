@@ -25,7 +25,7 @@ class UpdateFornecedorRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'cnpj' => preg_replace('/\D/', '', (string) $this->input('cnpj')),
+            'cnpj' => strtoupper((string) preg_replace('/[^0-9A-Za-z]/', '', (string) $this->input('cnpj'))),
             'telefone' => preg_replace('/[\s()-]/', '', (string) $this->input('telefone')),
         ]);
     }
